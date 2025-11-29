@@ -6,9 +6,7 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.hw03_gymlog.databinding.ActivityMainBinding;
-
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
