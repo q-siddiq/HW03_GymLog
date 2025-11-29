@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.hw03_gymlog.database.entities.GymLog;
 import com.example.hw03_gymlog.MainActivity;
+import com.example.hw03_gymlog.database.entities.User;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
@@ -12,7 +13,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class GymLogRepository {
-    private GymLogDAO gymLogDAO;
+    private final GymLogDAO gymLogDAO;
+    private final UserDAO userDAO;
     private ArrayList<GymLog> allLogs;
 
     private static GymLogRepository repository;
@@ -20,6 +22,7 @@ public class GymLogRepository {
     private GymLogRepository(Application application) {
         GymLogDatabase db = GymLogDatabase.getDatabase(application);
         this.gymLogDAO = db.gymLogDao();
+        this.userDAO = db.userDAO();
         this.allLogs = (ArrayList<GymLog>) this.gymLogDAO.getAllRecords();
     }
 
@@ -54,7 +57,6 @@ public class GymLogRepository {
         try{
             return future.get();
         }catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
             Log.i(MainActivity.TAG, "Problem when getting all GymLogs in the repository");
         }
         return null;
@@ -63,6 +65,12 @@ public class GymLogRepository {
     public void insertGymLog(GymLog gymLog) {
         GymLogDatabase.databaseWriteExecutor.execute(()-> {
             gymLogDAO.insert(gymLog);
+        });
+    }
+
+    public void insertUser(User... user) {
+        GymLogDatabase.databaseWriteExecutor.execute(()-> {
+            userDAO.insert(user);
         });
     }
 }
