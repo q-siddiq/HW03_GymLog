@@ -53,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
     private int loggedInUserId = -1;
     private User user;
 
+    /**
+     * Called when the activity is created.
+     * Sets up the layout, RecyclerView, ViewModel, and login state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +93,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Determines which user is logged in by checking SharedPreferences,
+     * savedInstanceState, and Intent extras.
+     */
     private void loginUser(Bundle savedInstanceState) {
         //check shared preference for logged in user from the file
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key),
@@ -113,6 +121,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Saves the logged-in user ID when the activity needs to restore itself later.
+     */
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -120,6 +131,9 @@ public class MainActivity extends AppCompatActivity {
         updateSharedPreference();
     }
 
+    /**
+     * Creates the options menu (logout menu).
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -127,6 +141,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Updates the menu before it shows, including displaying the username.
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.logoutMenuItem);
@@ -145,6 +162,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Shows a popup asking the user to confirm logging out.
+     */
     private void showLogoutDialog() {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
         final AlertDialog alertDialog = alertBuilder.create();
@@ -157,17 +177,18 @@ public class MainActivity extends AppCompatActivity {
                 logout();
             }
         });
-
         alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
             }
         });
-
         alertBuilder.create().show();
     }
 
+    /**
+     * Logs the user out and returns them to the login screen.
+     */
     private void logout() {
         loggedInUserId = LOGGED_OUT;
         updateSharedPreference();
@@ -177,6 +198,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(LoginActivity.loginIntentFactory(getApplicationContext()));
     }
 
+    /**
+     * Saves the current user ID into SharedPreferences.
+     */
     private void updateSharedPreference() {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
@@ -184,12 +208,18 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferencesEditor.apply();
     }
 
+    /**
+     * Creates an Intent for opening MainActivity with a specific user ID.
+     */
     static Intent mainActivityIntentFactory(Context context, int userId) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra(MAIN_ACTIVITY_USER_ID, userId);
         return intent;
     }
 
+    /**
+     * Saves a new gym log entry to the database using the user’s input.
+     */
     private void insertGymLogRecord() {
         if (mExercise.isEmpty()) {
             return;
@@ -201,15 +231,16 @@ public class MainActivity extends AppCompatActivity {
     private void updateDisplay() {
         ArrayList<GymLog> allLogs = repository.getAllLogsByUserId(loggedInUserId);
         if (allLogs.isEmpty()) {
-    //        binding.logDisplayTextView.setText(R.string.nothing_to_show_time_to_hit_the_gym);
         }
         StringBuilder sb = new StringBuilder();
         for (GymLog log : allLogs) {
             sb.append(log);
         }
-    //    binding.logDisplayTextView.setText(sb.toString());
     }
 
+    /**
+     * Reads the user's input from the text fields.
+     */
     private void getInformationFromDisplay() {
         mExercise = binding.exerciseInputEditText.getText().toString();
         try{

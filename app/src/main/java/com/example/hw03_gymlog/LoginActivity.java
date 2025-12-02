@@ -29,10 +29,8 @@ public class LoginActivity extends AppCompatActivity {
     private GymLogRepository repository;
 
     /**
-     * Called when the activity is starting. Initializes the activity, sets the content view,
-     * and sets up the login button click listener.
-     * @param savedInstanceState If the activity is being re-initialized after previously being shut down
-     * then this Bundle contains the data it most recently supplied in onSaveInstanceState.
+     * Runs when the activity starts.
+     * Sets up view binding and assigns the login button action.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +47,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Verifies user login credentials by checking the username and password.
+     * If valid, opens MainActivity with the user ID.
+     * If invalid, shows helpful error messages.
+     */
     private void verifyUser() {
 
         String username = binding.userNameLoginEditText.getText().toString();
@@ -74,8 +77,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Displays a Toast message on the screen.
-     * @param message the message to be displayed
+     * Displays a short on-screen message.
+     *
+     * @param message the message text to display
      */
     private void toastMaker(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -83,11 +87,11 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Creates an Intent for starting the LoginActivity.
-     * @param context the context from which the Intent is created
-     * @return an Intent to start the LoginActivity
+     *
+     * @param context the context requesting this activity
+     * @return an Intent to start LoginActivity
      */
     static Intent loginIntentFactory(Context context) {
         return new Intent(context, LoginActivity.class);
     }
-
 }

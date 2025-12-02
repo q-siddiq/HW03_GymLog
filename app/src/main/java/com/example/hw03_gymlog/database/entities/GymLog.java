@@ -9,6 +9,12 @@ import com.example.hw03_gymlog.database.GymLogDatabase;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Author: Quratulain Siddiq
+ * CST 338 GymLog
+ * Represents a single gym log entry.
+ * Each log stores an exercise name, weight, reps, date, and the user who created it.
+ */
 @Entity(tableName = GymLogDatabase.GYM_LOG_TABLE)
 public class GymLog {
     @PrimaryKey(autoGenerate = true)
@@ -20,6 +26,15 @@ public class GymLog {
     private LocalDateTime date;
     private int userId;
 
+    /**
+     * Creates a new GymLog entry for a user.
+     * Automatically sets the log date to the current time.
+     *
+     * @param exercise the name of the exercise
+     * @param weight   the weight used
+     * @param reps     number of repetitions
+     * @param userId   the ID of the user who created the log
+     */
     public GymLog(String exercise, double weight, int reps, int userId) {
         this.exercise = exercise;
         this.weight = weight;
@@ -28,6 +43,9 @@ public class GymLog {
         date = LocalDateTime.now();
     }
 
+    /**
+     * Returns a formatted string of the log details.
+     */
     @NonNull
     @Override
     public String toString() {
@@ -38,6 +56,9 @@ public class GymLog {
                 "=-=-=-=-=-=-=\n";
     }
 
+    /**
+     * Checks if this log is equal to another log.
+     */
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -45,11 +66,15 @@ public class GymLog {
         return id == gymLog.id && Double.compare(weight, gymLog.weight) == 0 && reps == gymLog.reps && userId == gymLog.userId && Objects.equals(exercise, gymLog.exercise) && Objects.equals(date, gymLog.date);
     }
 
+    /**
+     * Generates a hash code for this log.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id, exercise, weight, reps, date, userId);
     }
 
+    /** Getter and setter methods below **/
     public int getId() {
         return id;
     }
@@ -97,4 +122,5 @@ public class GymLog {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
 }

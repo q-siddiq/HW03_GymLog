@@ -17,15 +17,32 @@ import java.util.List;
  */
 public class GymLogViewModel extends AndroidViewModel {
     private final GymLogRepository repository;
+
+    /**
+     * Creates a new ViewModel and initializes the repository.
+     *
+     * @param application the Application context
+     */
     public GymLogViewModel(Application application) {
         super(application);
         repository = GymLogRepository.getRepository(application);
     }
 
+    /**
+     * Returns a LiveData list of GymLog entries for the specified user.
+     *
+     * @param userId the ID of the user whose logs should be retrieved
+     * @return LiveData containing a list of GymLog items
+     */
     public LiveData<List<GymLog>> getAllLogsById(int userId) {
         return repository.getAllLogsByUserIdLiveData(userId);
     }
 
+    /**
+     * Inserts a new GymLog into the repository.
+     *
+     * @param log the GymLog entry to insert
+     */
     public void insert(GymLog log) {
         repository.insertGymLog(log);
     }
